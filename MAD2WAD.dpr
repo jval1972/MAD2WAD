@@ -1,4 +1,4 @@
-program MARS2WAD;
+program MAD2WAD;
 
 uses
   Forms,
