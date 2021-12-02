@@ -8,6 +8,7 @@ uses
 
 begin
   Application.Initialize;
+  Application.Title := 'MARS2MAD';
   Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.
