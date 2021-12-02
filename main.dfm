@@ -3143,7 +3143,6 @@ object Form1: TForm1
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'MAD'
-    FileName = 'MARS.MAD'
     Filter = 'MAD Files (*.mad)|*.mad'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Left = 320

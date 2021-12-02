@@ -57,6 +57,7 @@ type
     { Private declarations }
     finpfilename: string;
     foutfilename: string;
+    procedure DoConvert;
   public
     { Public declarations }
   end;
@@ -67,6 +68,10 @@ var
 implementation
 
 {$R *.dfm}
+
+uses
+  mw_madreader,
+  mw_wadwriter;
 
 procedure println(const s: string);
 begin
@@ -85,7 +90,7 @@ begin
   Edit2.Text := '';
   Memo1.Lines.Clear;
   println('MAD2WAD v1.0, (c) 2021 by Jim Valavanis');
-  println('Use this tool to convert MAD files (Mars/Hero/Tao) to the Doom WAD format.');
+  println('Use this tool to convert MAD files (Mars/Hero/Tao) to the Doom WADs.');
   println('');
   println('For updates please visit https://sourceforge.net/projects/mars3d/');
   println('');
@@ -148,6 +153,41 @@ begin
   CopyFile(fname, fbck);
 end;
 
+procedure TForm1.DoConvert;
+var
+  mad: TMADReader;
+  wad: TWadWriter;
+  i: integer;
+  path: string;
+
+  procedure _AddFile(const lumpname: string; const fname: string);
+  begin
+    if FileExists(path + fname) then
+      wad.AddFile(lumpname, path + fname)
+    else if FileExists(path + 'INSTALL\' + fname) then
+      wad.AddFile(lumpname, path + 'INSTALL\' + fname);
+  end;
+
+begin
+  mad := TMADReader.Create;
+  wad := TWadWriter.Create;
+
+  try
+    mad.OpenWadFile(finpfilename);
+
+    path := ExtractFilePath(finpfilename);
+    _AddFile('PALETTE', 'GAME.PAL');
+
+    for i := 0 to mad.NumEntries - 1 do
+      wad.AddString(mad.EntryName(i), mad.EntryAsString(i));
+
+    wad.SaveToFile(foutfilename);
+  finally
+    mad.Free;
+    wad.Free;
+  end;
+end;
+
 procedure TForm1.BitBtn3Click(Sender: TObject);
 begin
   finpfilename := Trim(finpfilename);
@@ -164,6 +204,7 @@ begin
   end;
 
   foutfilename := Trim(foutfilename);
+  if foutfilename = '' then
   begin
     println('Please select output file!');
     exit;
@@ -175,11 +216,17 @@ begin
     exit;
   end;
 
-  BackupFile(
+  if FileExists(foutfilename) then
+  begin
+    println('Backup ' + ExtractFileName(foutfilename));
+    BackupFile(foutfilename);
+  end;
+
   println('Converting ' + ExtractFileName(finpfilename) + ' to ' + ExtractFileName(foutfilename));
 
   Screen.Cursor := crHourglass;
   try
+    DoConvert;
   finally
     Screen.Cursor := crDefault;
   end;
