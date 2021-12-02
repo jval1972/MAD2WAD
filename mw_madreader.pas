@@ -36,7 +36,7 @@ uses
   mw_types;
 
 type
-  TWadReader = class
+  TMADReader = class
   private
     h: wadinfo_t;
     la: Pfilelump_tArray;
@@ -63,7 +63,7 @@ type
 
 implementation
 
-constructor TWadReader.Create;
+constructor TMADReader.Create;
 begin
   h.identification := 0;
   h.numlumps := 0;
@@ -74,13 +74,13 @@ begin
   Inherited;
 end;
 
-destructor TWadReader.Destroy;
+destructor TMADReader.Destroy;
 begin
   Clear;
   Inherited;
 end;
 
-procedure TWadReader.Clear;
+procedure TMADReader.Clear;
 begin
   if h.numlumps > 0 then
   begin
@@ -103,7 +103,7 @@ begin
   end;
 end;
 
-procedure TWadReader.OpenWadFile(const aname: string);
+procedure TMADReader.OpenWadFile(const aname: string);
 var
   madbuf: packed array[0..19] of byte;
   ismad: boolean;
@@ -171,7 +171,7 @@ begin
     Raise Exception.Create('Invalid WAD file ' + aname);
 end;
 
-function TWadReader.EntryAsString(const id: integer): string;
+function TMADReader.EntryAsString(const id: integer): string;
 begin
   if (fs <> nil) and (id >= 0) and (id < h.numlumps) then
   begin
@@ -183,7 +183,7 @@ begin
     Result := '';
 end;
 
-function TWadReader.EntryAsString(const aname: string): string;
+function TMADReader.EntryAsString(const aname: string): string;
 var
   id: integer;
 begin
@@ -194,7 +194,7 @@ begin
     Result := '';
 end;
 
-function TWadReader.ReadEntry(const id: integer; var buf: pointer; var bufsize: integer): boolean;
+function TMADReader.ReadEntry(const id: integer; var buf: pointer; var bufsize: integer): boolean;
 begin
   if (fs <> nil) and (id >= 0) and (id < h.numlumps) then
   begin
@@ -208,7 +208,7 @@ begin
     Result := false;
 end;
 
-function TWadReader.ReadEntry(const aname: string; var buf: pointer; var bufsize: integer): boolean; 
+function TMADReader.ReadEntry(const aname: string; var buf: pointer; var bufsize: integer): boolean; 
 var
   id: integer;
 begin
@@ -219,7 +219,7 @@ begin
     Result := false;
 end;
 
-function TWadReader.EntryName(const id: integer): string;
+function TMADReader.EntryName(const id: integer): string;
 begin
   if (id >= 0) and (id < h.numlumps) then
     Result := char8tostring(la[id].name)
@@ -227,7 +227,7 @@ begin
     Result := '';
 end;
 
-function TWadReader.EntryId(const aname: string): integer;
+function TMADReader.EntryId(const aname: string): integer;
 var
   i: integer;
   uname: string;
@@ -242,7 +242,7 @@ begin
   Result := -1;
 end;
 
-function TWadReader.EntryInfo(const id: integer): Pfilelump_t;
+function TMADReader.EntryInfo(const id: integer): Pfilelump_t;
 begin
   if (id >= 0) and (id < h.numlumps) then
     Result := @la[id]
@@ -250,17 +250,17 @@ begin
     Result := nil;
 end;
 
-function TWadReader.EntryInfo(const aname: string): Pfilelump_t;
+function TMADReader.EntryInfo(const aname: string): Pfilelump_t;
 begin
   result := EntryInfo(EntryId(aname));
 end;
 
-function TWadReader.NumEntries: integer;
+function TMADReader.NumEntries: integer;
 begin
   Result := h.numlumps;
 end;
 
-function TWadReader.FileSize: integer;
+function TMADReader.FileSize: integer;
 begin
   if fs <> nil then
     Result := fs.Size
