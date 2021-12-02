@@ -20,7 +20,7 @@
 //  02111-1307, USA.
 //
 // DESCRIPTION:
-//  Main form
+//  Palette stuff
 //
 //------------------------------------------------------------------------------
 //  Site  : https://sourceforge.net/projects/mars3d/
@@ -35,10 +35,6 @@ uses
   SysUtils;
 
 procedure MARS_CreateDoomPalette(const inppal: PByteArray; const outpal: PByteArray; const colormap: PByteArray);
-
-// From palette frompal to palette topal create translation table
-// All arrays must be allocated in memory before calling it
-procedure MARS_CreateTranslation(const frompal, topal: PByteArray; const trans: PByteArray);
 
 implementation
 
@@ -189,24 +185,6 @@ begin
   for i := 0 to NUMLIGHTS + 1 do
     for c := 0 to 255 do
       colormap[i * 256 + c] := lightpalette[i][c];
-end;
-
-// From palette frompal to palette topal create translation table
-// All arrays must be allocated in memory before calling it
-procedure MARS_CreateTranslation(const frompal, topal: PByteArray; const trans: PByteArray);
-var
-  i: integer;
-  r, g, b: byte;
-begin
-  MARS_FullRangePalette(frompal);
-  MARS_FullRangePalette(topal);
-  for i := 0 to 255 do
-  begin
-    r := topal[i * 3];
-    g := topal[i * 3 + 1];
-    b := topal[i * 3 + 2];
-    trans[i] := MARS_BestColor(r, g, b, frompal, 0, 255);
-  end;
 end;
 
 end.

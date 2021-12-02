@@ -71,7 +71,8 @@ implementation
 
 uses
   mw_madreader,
-  mw_wadwriter;
+  mw_wadwriter,
+  mw_palette;
 
 procedure println(const s: string);
 begin
@@ -160,12 +161,31 @@ var
   i: integer;
   path: string;
 
-  procedure _AddFile(const lumpname: string; const fname: string);
+  procedure _AddPalette(const fname: string);
+  var
+    fn: string;
+    ms: TMemoryStream;
+    playpal: packed array[0..768 * 22 - 1] of byte;
+    colormap: packed array[0..34 * 256 - 1] of byte;
   begin
     if FileExists(path + fname) then
-      wad.AddFile(lumpname, path + fname)
+      fn := path + fname
     else if FileExists(path + 'INSTALL\' + fname) then
-      wad.AddFile(lumpname, path + 'INSTALL\' + fname);
+      fn := path + 'INSTALL\' + fname
+    else
+      exit;
+    ms := TMemoryStream.Create;
+    try
+      ms.LoadFromFile(fn);
+      if ms.Size >= 768 then
+      begin
+        MARS_CreateDoomPalette(ms.Memory, @playpal, @colormap);
+        wad.AddData('PLAYPAL', @playpal, SizeOf(playpal));
+        wad.AddData('COLORMAP', @colormap, SizeOf(colormap));
+      end;
+    finally
+      ms.Free;
+    end;
   end;
 
 begin
@@ -176,7 +196,7 @@ begin
     mad.OpenWadFile(finpfilename);
 
     path := ExtractFilePath(finpfilename);
-    _AddFile('PALETTE', 'GAME.PAL');
+    _AddPalette('GAME.PAL');
 
     for i := 0 to mad.NumEntries - 1 do
       wad.AddString(mad.EntryName(i), mad.EntryAsString(i));
