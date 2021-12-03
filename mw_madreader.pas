@@ -113,9 +113,7 @@ var
 begin
   if aname = '' then
     Exit;
-  {$IFDEF DEBUG}
-  print('Opening WAD file ' + aname + #13#10);
-  {$ENDIF}
+
   Clear;
   fs := TFileStream.Create(aname, fmOpenRead or fmShareDenyWrite);
 
