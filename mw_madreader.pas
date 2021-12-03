@@ -168,7 +168,7 @@ begin
     ffilename := aname;
   end
   else
-    Raise Exception.Create('Invalid WAD file ' + aname);
+    Raise Exception.Create('Invalid MAD/WAD file ' + aname);
 end;
 
 function TMADReader.EntryAsString(const id: integer): string;
