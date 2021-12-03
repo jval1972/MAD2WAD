@@ -3037,6 +3037,14 @@ object Form1: TForm1
       Layout = blGlyphTop
       NumGlyphs = 2
     end
+    object ProgressBar1: TProgressBar
+      Left = 344
+      Top = 88
+      Width = 265
+      Height = 17
+      TabOrder = 3
+      Visible = False
+    end
   end
   object Panel2: TPanel
     Left = 0

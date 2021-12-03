@@ -32,7 +32,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, ExtCtrls;
+  Dialogs, StdCtrls, Buttons, ExtCtrls, ComCtrls;
 
 type
   TForm1 = class(TForm)
@@ -49,6 +49,7 @@ type
     Memo1: TMemo;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
+    ProgressBar1: TProgressBar;
     procedure FormCreate(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
@@ -87,6 +88,7 @@ begin
   foutfilename := '';
   BitBtn2.Enabled := false;
   BitBtn3.Enabled := false;
+  ProgressBar1.Visible := false;
   Edit1.Text := '';
   Edit2.Text := '';
   Memo1.Lines.Clear;
@@ -197,11 +199,24 @@ begin
     mad.OpenWadFile(finpfilename);
     _AddPalette('GAME.PAL');
 
+    ProgressBar1.Min := 0;
+    ProgressBar1.Max := mad.NumEntries;
+    ProgressBar1.Position := 0;
+    ProgressBar1.Visible := true;
     for i := 0 to mad.NumEntries - 1 do
+    begin
       wad.AddString(mad.EntryName(i), mad.EntryAsString(i));
+      if i mod 10 = 0 then
+      begin
+        ProgressBar1.Position := i;
+        ProgressBar1.Repaint;
+      end;
+    end;
 
     wad.SaveToFile(foutfilename);
+
   finally
+    ProgressBar1.Visible := false;
     mad.Free;
     wad.Free;
   end;

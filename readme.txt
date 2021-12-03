@@ -28,3 +28,7 @@ MAD2WAD is a small utility that converts MAD files from the games Mars, Hero & T
 History
 -------
 
+Version 1.0.1 (20211203)
+-------------
+Initial release
+
