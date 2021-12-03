@@ -237,8 +237,13 @@ begin
 
   if FileExists(foutfilename) then
   begin
-    println('Backup ' + ExtractFileName(foutfilename));
-    BackupFile(foutfilename);
+    Screen.Cursor := crHourglass;
+    try
+      println('Backup ' + ExtractFileName(foutfilename));
+      BackupFile(foutfilename);
+    finally
+      Screen.Cursor := crDefault;
+    end;
   end;
 
   println('Converting ' + ExtractFileName(finpfilename) + ' to ' + ExtractFileName(foutfilename));
