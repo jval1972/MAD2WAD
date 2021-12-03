@@ -192,9 +192,9 @@ begin
   wad := TWadWriter.Create;
 
   try
-    mad.OpenWadFile(finpfilename);
-
     path := ExtractFilePath(finpfilename);
+
+    mad.OpenWadFile(finpfilename);
     _AddPalette('GAME.PAL');
 
     for i := 0 to mad.NumEntries - 1 do
