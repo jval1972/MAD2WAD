@@ -116,7 +116,6 @@ begin
     foutfilename := SaveDialog1.FileName;
     println('Output file: ' + foutfilename);
     BitBtn3.Enabled := true;
-    BitBtn3Click(Sender);
   end;
 end;
 
