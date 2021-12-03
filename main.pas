@@ -93,7 +93,7 @@ begin
   Edit2.Text := '';
   Memo1.Lines.Clear;
   println('MAD2WAD v1.0, (c) 2021 by Jim Valavanis');
-  println('Use this tool to convert MAD files (Mars/Hero/Tao) to the Doom WADs.');
+  println('Use this tool to convert MAD files (Mars/Hero/Tao) to Doom WADs.');
   println('');
   println('For updates please visit https://sourceforge.net/projects/mars3d/');
   println('');
