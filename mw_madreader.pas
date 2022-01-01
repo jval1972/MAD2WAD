@@ -2,7 +2,7 @@
 //
 //  MAD2WAD - Create a Doom WAD file from Mars, Hero or Tao MAD files
 //
-//  Copyright (C) 2021 by Jim Valavanis
+//  Copyright (C) 2021-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -206,7 +206,7 @@ begin
     Result := false;
 end;
 
-function TMADReader.ReadEntry(const aname: string; var buf: pointer; var bufsize: integer): boolean; 
+function TMADReader.ReadEntry(const aname: string; var buf: pointer; var bufsize: integer): boolean;
 var
   id: integer;
 begin
